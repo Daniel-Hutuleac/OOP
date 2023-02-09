@@ -1,0 +1,307 @@
+import java.util.Scanner;
+
+public class UniversitySystem {
+    private static Scanner sc = new Scanner(System.in);
+    private static Department department1 = new Department("Mathematics");
+    private static Department department2 = new Department("Technology");
+    private static Department department3 = new Department("Science");
+    private static Department department4 = new Department("Engineering");
+
+    private static Department department = new Department("Test");
+
+    public static void main(String[] args) {
+        while (true) {
+
+                System.out.println("Select Department:" +
+                        "1. Mathematics" +
+                        "2. Technology" +
+                        "3. Science" +
+                        "4. Engineering" +
+                        "5. Quit");
+            int choice = sc.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        department = department1;
+                        break;
+                    case 2:
+                        department = department2;
+                        break;
+                    case 3:
+                        department = department3;
+                        break;
+                    case 4:
+                        department = department4;
+                        break;
+                    case 5:
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Invalid option");
+                        break;
+                }
+                while (true) {
+                    System.out.println("1. Add Lecturer");
+                    System.out.println("2. Display Lecturer");
+                    System.out.println("2. Remove Lecturer");
+                    System.out.println("3. Modify Lecturer");
+                    System.out.println("4. Add Student");
+                    System.out.println("5. Remove Student");
+                    System.out.println("6. Modify Student");
+                    System.out.print("Enter your choice: ");
+                    int choice2 = sc.nextInt();
+                    switch (choice2) {
+                        case 1:
+                            addLecturer();
+                            break;
+                        case 2:
+                            removeLecturer();
+                            break;
+                        case 3:
+                            modifyLecturer();
+                            break;
+                        case 4:
+                            addStudent();
+                            break;
+                        case 5:
+                            removeStudent();
+                            break;
+                        case 6:
+                            modifyStudent();
+                            break;
+                        default:
+                            System.out.println("Invalid option");
+                            break;
+                    }
+                }
+            }
+        }
+
+    private static void addLecturer() {
+        System.out.print("Enter lecturer id: ");
+        int id = sc.nextInt();
+        System.out.print("Enter lecturer name: ");
+        String name = sc.next();
+        System.out.print("Enter lecturer age: ");
+        int age = sc.nextInt();
+        System.out.print("Enter lecturer email: ");
+        String email = sc.next();
+        System.out.print("Enter lecturer phone number: ");
+        String phoneNumber = sc.next();
+        System.out.print("Enter lecturer sex (M/F): ");
+        char sex = sc.next().charAt(0);
+        System.out.print("Enter lecturer address: ");
+        String address = sc.next();
+        System.out.print("Enter lecturer salary: ");
+        double salary = sc.nextDouble();
+        Lecturer lecturer = new Lecturer(id, name, age, email, phoneNumber, sex, address, salary);
+        department.addLecturer(lecturer);
+    }
+
+    private static void removeLecturer() {
+        System.out.print("Enter lecturer id: ");
+        int id = sc.nextInt();
+        department.removeLecturer(id);
+    }
+    private static void modifyLecturer(){
+        System.out.print("Enter lecturer id: ");
+    }
+
+    private static void addStudent() {
+        System.out.print("Enter student id: ");
+        int id = sc.nextInt();
+        System.out.print("Enter student name: ");
+        String name = sc.next();
+        System.out.print("Enter student age: ");
+        int age = sc.nextInt();
+        System.out.print("Enter student email: ");
+        String email = sc.next();
+        System.out.print("Enter student phone number: ");
+        String phoneNumber = sc.next();
+        System.out.print("Enter student sex (M/F): ");
+        char sex = sc.next().charAt(0);
+        System.out.print("Enter student address: ");
+        String address = sc.next();
+        System.out.print("Enter student course: ");
+        String course = sc.next();
+        System.out.print("Enter student fees: ");
+        double fees = sc.nextDouble();
+        Student student = new Student(id, name, age, email, phoneNumber, sex,address, course, fees);
+        department.addStudent(student);
+    }
+
+    private static void removeStudent() {
+        System.out.print("Enter student id: ");
+        int id = sc.nextInt();
+        department.removeStudent(id);
+    }
+
+   private static void modifyStudent(){
+       System.out.print("Enter student id: ");
+   }
+}
+import java.util.ArrayList;
+
+class Department {
+    private String name;
+    private ArrayList<Lecturer> lecturers;
+    private ArrayList<Student> students;
+    private ArrayList<Bootcamp> bootcamps;
+
+    public Department(String name) {
+        this.name = name;
+        lecturers = new ArrayList<Lecturer>();
+        students = new ArrayList<Student>();
+        bootcamps = new ArrayList<Bootcamp>();
+        }
+
+public void addLecturer(Lecturer lecturer) {
+        lecturers.add(lecturer);
+        }
+
+public void removeLecturer(int id) {
+    lecturers.removeIf(lecturer -> Lecturer.getId() == id);
+        }
+
+public void addStudent(Student student) {
+        students.add(student);
+        }
+
+public void removeStudent(int id) {
+    students.removeIf(student -> Student.getId() == id);
+        }
+
+
+public String getName() {
+        return name;
+        }
+
+public ArrayList<Lecturer> getLecturers() {
+        return lecturers;
+        }
+
+public ArrayList<Student> getStudents() {
+        return students;
+        }
+
+
+        }
+        abstract class Person {
+    private static int id;
+    private String name;
+    private int age;
+    private String email;
+    private String phoneNumber;
+    private char sex;
+    private String address;
+
+    public Person(int id, String name, int age, String email, String phoneNumber, char sex, String address) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.sex = sex;
+        this.address = address;
+    }
+
+    public static int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public char getSex() {
+        return sex;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+}
+class Lecturer extends Person {
+    private double salary;
+    public Lecturer(int id, String name, int age, String email, String phoneNumber, char sex, String address, double salary) {
+        super(id, name, age, email, phoneNumber, sex, address);
+        this.salary = salary;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+}
+class Student extends Person {
+    private String course;
+    private double fees;
+
+    public Student(int id, String name, int age, String email, String phoneNumber, char sex, String address, String course, double fees) {
+        super(id, name, age, email, phoneNumber, sex, address);
+        this.course = course;
+        this.fees = fees;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public double getFees() {
+        return fees;
+    }
+
+    public void setFees(double fees) {
+        this.fees = fees;
+    }
+}
+class Bootcamp {
+    private int id;
+    private String name;
+    private double fees;
+
+    public Bootcamp(int id, String name, double fees) {
+        this.id = id;
+        this.name = name;
+        this.fees = fees;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getFees() {
+        return fees;
+    }
+
+    public void setFees(double fees) {
+        this.fees = fees;
+    }
+}
+
+
+
+
