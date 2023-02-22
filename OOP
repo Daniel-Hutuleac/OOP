@@ -1,193 +1,177 @@
-import java.util.Scanner;
-
-public class UniversitySystem {
-    private static Scanner sc = new Scanner(System.in);
-    private static Department department1 = new Department("Mathematics");
-    private static Department department2 = new Department("Technology");
-    private static Department department3 = new Department("Science");
-    private static Department department4 = new Department("Engineering");
-
-    private static Department department = new Department("Test");
-
-    public static void main(String[] args) {
-        while (true) {
-
-                System.out.println("Select Department:" +
-                        "1. Mathematics" +
-                        "2. Technology" +
-                        "3. Science" +
-                        "4. Engineering" +
-                        "5. Quit");
-            int choice = sc.nextInt();
-
-                switch (choice) {
-                    case 1:
-                        department = department1;
-                        break;
-                    case 2:
-                        department = department2;
-                        break;
-                    case 3:
-                        department = department3;
-                        break;
-                    case 4:
-                        department = department4;
-                        break;
-                    case 5:
-                        System.exit(0);
-                        break;
-                    default:
-                        System.out.println("Invalid option");
-                        break;
-                }
-                while (true) {
-                    System.out.println("1. Add Lecturer");
-                    System.out.println("2. Display Lecturer");
-                    System.out.println("2. Remove Lecturer");
-                    System.out.println("3. Modify Lecturer");
-                    System.out.println("4. Add Student");
-                    System.out.println("5. Remove Student");
-                    System.out.println("6. Modify Student");
-                    System.out.print("Enter your choice: ");
-                    int choice2 = sc.nextInt();
-                    switch (choice2) {
-                        case 1:
-                            addLecturer();
-                            break;
-                        case 2:
-                            removeLecturer();
-                            break;
-                        case 3:
-                            modifyLecturer();
-                            break;
-                        case 4:
-                            addStudent();
-                            break;
-                        case 5:
-                            removeStudent();
-                            break;
-                        case 6:
-                            modifyStudent();
-                            break;
-                        default:
-                            System.out.println("Invalid option");
-                            break;
-                    }
-                }
-            }
-        }
-
-    private static void addLecturer() {
-        System.out.print("Enter lecturer id: ");
-        int id = sc.nextInt();
-        System.out.print("Enter lecturer name: ");
-        String name = sc.next();
-        System.out.print("Enter lecturer age: ");
-        int age = sc.nextInt();
-        System.out.print("Enter lecturer email: ");
-        String email = sc.next();
-        System.out.print("Enter lecturer phone number: ");
-        String phoneNumber = sc.next();
-        System.out.print("Enter lecturer sex (M/F): ");
-        char sex = sc.next().charAt(0);
-        System.out.print("Enter lecturer address: ");
-        String address = sc.next();
-        System.out.print("Enter lecturer salary: ");
-        double salary = sc.nextDouble();
-        Lecturer lecturer = new Lecturer(id, name, age, email, phoneNumber, sex, address, salary);
-        department.addLecturer(lecturer);
-    }
-
-    private static void removeLecturer() {
-        System.out.print("Enter lecturer id: ");
-        int id = sc.nextInt();
-        department.removeLecturer(id);
-    }
-    private static void modifyLecturer(){
-        System.out.print("Enter lecturer id: ");
-    }
-
-    private static void addStudent() {
-        System.out.print("Enter student id: ");
-        int id = sc.nextInt();
-        System.out.print("Enter student name: ");
-        String name = sc.next();
-        System.out.print("Enter student age: ");
-        int age = sc.nextInt();
-        System.out.print("Enter student email: ");
-        String email = sc.next();
-        System.out.print("Enter student phone number: ");
-        String phoneNumber = sc.next();
-        System.out.print("Enter student sex (M/F): ");
-        char sex = sc.next().charAt(0);
-        System.out.print("Enter student address: ");
-        String address = sc.next();
-        System.out.print("Enter student course: ");
-        String course = sc.next();
-        System.out.print("Enter student fees: ");
-        double fees = sc.nextDouble();
-        Student student = new Student(id, name, age, email, phoneNumber, sex,address, course, fees);
-        department.addStudent(student);
-    }
-
-    private static void removeStudent() {
-        System.out.print("Enter student id: ");
-        int id = sc.nextInt();
-        department.removeStudent(id);
-    }
-
-   private static void modifyStudent(){
-       System.out.print("Enter student id: ");
-   }
-}
+//Package “Task2”
+//Class Department
+package Task2;
 import java.util.ArrayList;
 
 class Department {
     private String name;
-    private ArrayList<Lecturer> lecturers;
-    private ArrayList<Student> students;
-    private ArrayList<Bootcamp> bootcamps;
+    private ArrayList<Lecturer> lecturers = new ArrayList<Lecturer>();
+    private ArrayList<Student> students = new ArrayList<Student>();
+    private int nextLecturerId;
+    private int nextStudentId;
 
     public Department(String name) {
         this.name = name;
-        lecturers = new ArrayList<Lecturer>();
-        students = new ArrayList<Student>();
-        bootcamps = new ArrayList<Bootcamp>();
-        }
+        this.lecturers = new ArrayList<Lecturer>();
+        this.students = new ArrayList<Student>();
+        this.nextLecturerId=1;
+        this.nextStudentId=1;
+    }
 
-public void addLecturer(Lecturer lecturer) {
+    public void addLecturer(Lecturer lecturer) {
+        lecturer.setId(nextLecturerId++);
         lecturers.add(lecturer);
-        }
+    }
 
-public void removeLecturer(int id) {
-    lecturers.removeIf(lecturer -> Lecturer.getId() == id);
-        }
+    public void removeLecturer(int id) {
+        lecturers.removeIf(lecturer -> lecturer.getId() == id);
+    }
 
-public void addStudent(Student student) {
+    public void addStudent(Student student) {
+        student.setId(nextStudentId++);
         students.add(student);
+    }
+
+    public void removeStudent(int id) {
+        students.removeIf(student -> student.getId() == id);
+    }
+
+    public void displayStudent(int id) {
+        int i = 0;
+        for (Student s : students) {
+            if (id == s.getId()) {
+                System.out.println("========================" +
+                        "\nStudent with id " + s.getId() + ": " +
+                        " Name: " + s.getName() +
+                        "; Age: " + s.getAge() +
+                        "; Email: " + s.getEmail() +
+                        "; Phone Number: " + s.getPhoneNumber() +
+                        "; Sex: " + s.getSex() +
+                        "; Address: " + s.getAddress() +
+                        "; Course: " + s.getCourse() +
+                        "; Fees: " + s.getFees());
+                i++;
+                break;
+            }
+        }
+        if (i == 0) {
+            System.out.println("===================="+
+                    "\nStudent not found");
+        }
+    }
+    public void displayLecturer(int id) {
+        int i = 0;
+        for (Lecturer l : lecturers) {
+            if (id == l.getId()) {
+                System.out.println("========================" +
+                        "\nLecturer with id " + l.getId() + ": " +
+                        " Name: " + l.getName() +
+                        "; Age: " + l.getAge() +
+                        "; Email: " + l.getEmail() +
+                        "; Phone Number: " + l.getPhoneNumber() +
+                        "; Sex: " + l.getSex() +
+                        "; Address: " + l.getAddress() +
+                        "; Salary: " + l.getSalary());
+                i++;
+                break;
+            }
+        }
+        if (i == 0) {
+            System.out.println("===================="+
+                    "\nLecturer not found");
+        }
+    }
+    public void modifyLecturer(int id, String name, int age, String email, String phoneNumber, char sex, String address, double salary) {
+        for (Lecturer l : lecturers) {
+            if (id == l.getId()) {
+                l.setName(name);
+                l.setAge(age);
+                l.setEmail(email);
+                l.setPhoneNumber(phoneNumber);
+                l.setSex(sex);
+                l.setAddress(address);
+                l.setSalary(salary);
+            }
+        }
+    }
+
+    public void modifyStudent (int id,String name, int age, String email, String phoneNumber, char sex, String address, String course, double fees){
+        for (Student s : students){
+            if (id == s.getId()){
+                s.setName(name);
+                s.setAge(age);
+                s.setEmail(email);
+                s.setPhoneNumber(phoneNumber);
+                s.setSex(sex);
+                s.setAddress(address);
+                s.setCourse(course);
+                s.setFees(fees);
+            }
         }
 
-public void removeStudent(int id) {
-    students.removeIf(student -> Student.getId() == id);
+    }
+    public void displayAllLecturers(){
+        System.out.println("========================");
+        for (Lecturer l : lecturers){
+            System.out.println("Lecturer id: " + l.getId() +
+                    "; Name: " + l.getName() +
+                    "; Age: " + l.getAge() +
+                    "; Email: " + l.getEmail() +
+                    "; Phone Number: " + l.getPhoneNumber() +
+                    "; Sex: " + l.getSex() +
+                    "; Address: " + l.getAddress() +
+                    "; Salary: " + l.getSalary());
         }
-
-
-public String getName() {
+    }
+    public void displayAllStudents(){
+        System.out.println("========================");
+        for(Student s: students){
+            System.out.println("Student id: " + s.getId() +
+                    "; Name: " + s.getName() +
+                    "; Age: " + s.getAge() +
+                    "; Email: " + s.getEmail() +
+                    "; Phone Number: " + s.getPhoneNumber() +
+                    "; Sex: " + s.getSex() +
+                    "; Address: " + s.getAddress() +
+                    "; Course: " + s.getCourse() +
+                    "; Fees: " + s.getFees());
+        }
+    }
+    public String getName(){
         return name;
-        }
+    }
+}
+//Class Lecturer
 
-public ArrayList<Lecturer> getLecturers() {
-        return lecturers;
-        }
+package Task2;
+class Lecturer extends Person {
+    private double salary;
+    private int id;
+    public Lecturer(String name, int age, String email, String phoneNumber, char sex, String address, double salary) {
+        super(name, age, email, phoneNumber, sex, address);
+        this.salary = salary;
+    }
 
-public ArrayList<Student> getStudents() {
-        return students;
-        }
+    public double getSalary() {
+        return salary;
+    }
 
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
 
-        }
-        abstract class Person {
-    private static int id;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+}
+//Class Person
+package Task2;
+public abstract class Person {
+
     private String name;
     private int age;
     private String email;
@@ -195,8 +179,7 @@ public ArrayList<Student> getStudents() {
     private char sex;
     private String address;
 
-    public Person(int id, String name, int age, String email, String phoneNumber, char sex, String address) {
-        this.id = id;
+    public Person(String name, int age, String email, String phoneNumber, char sex, String address) {
         this.name = name;
         this.age = age;
         this.email = email;
@@ -205,9 +188,7 @@ public ArrayList<Student> getStudents() {
         this.address = address;
     }
 
-    public static int getId() {
-        return id;
-    }
+
 
     public String getName() {
         return name;
@@ -232,28 +213,41 @@ public ArrayList<Student> getStudents() {
     public String getAddress() {
         return address;
     }
-}
-class Lecturer extends Person {
-    private double salary;
-    public Lecturer(int id, String name, int age, String email, String phoneNumber, char sex, String address, double salary) {
-        super(id, name, age, email, phoneNumber, sex, address);
-        this.salary = salary;
+
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public double getSalary() {
-        return salary;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setSex(char sex) {
+        this.sex = sex;
     }
 }
+//Class Student
+package Task2;
 class Student extends Person {
     private String course;
     private double fees;
 
-    public Student(int id, String name, int age, String email, String phoneNumber, char sex, String address, String course, double fees) {
-        super(id, name, age, email, phoneNumber, sex, address);
+    private int id;
+
+    public Student(String name, int age, String email, String phoneNumber, char sex, String address, String course, double fees) {
+        super(name, age, email, phoneNumber, sex, address);
         this.course = course;
         this.fees = fees;
     }
@@ -273,35 +267,803 @@ class Student extends Person {
     public void setFees(double fees) {
         this.fees = fees;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
-class Bootcamp {
-    private int id;
+
+
+//Class UniversitySystem
+package Task2;
+import java.util.Scanner;
+
+public class UniversitySystem {
+    private static final Scanner sc = new Scanner(System.in);
+    private static final Department department1 = new Department("Mathematics");
+    private static final Department department2 = new Department("Technology");
+    private static final Department department3 = new Department("Science");
+    private static final Department department4 = new Department("Engineering");
+
+    private static Department department = new Department("Test");
+
+    public static void main(String[] args) {
+        // outer loop to display departments
+        while (true) {
+
+                System.out.print("""
+                        ==================
+                        Select Department:
+                        1. Mathematics
+                        2. Technology
+                        3. Science
+                        4. Engineering
+                        5. Quit
+                         Enter your choice:\s""");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1 -> department = department1;
+                case 2 -> department = department2;
+                case 3 -> department = department3;
+                case 4 -> department = department4;
+                case 5 -> System.exit(0);
+                default -> System.out.println("Invalid option");
+            }
+                // inner loop to perform actions on students/lecturers within the selected department
+                inner_loop: while (true) {
+                    System.out.println("=========="+"Department of "+department.getName()+"==========="+
+                            "\n1. Add Lecturer");
+                    System.out.println("2. Display Lecturer");
+                    System.out.println("3. Remove Lecturer");
+                    System.out.println("4. Modify Lecturer");
+                    System.out.println("5. Display All Lecturers");
+                    System.out.println("6. Add Student");
+                    System.out.println("7. Display Student");
+                    System.out.println("8. Remove Student");
+                    System.out.println("9. Modify Student");
+                    System.out.println("10. Display All Students");
+                    System.out.println("11. Back to departments");
+                    System.out.print("Enter your choice: ");
+                    int choice2 = sc.nextInt();
+                    switch (choice2) {
+                        case 1:
+                            addLecturer(department);
+                            break;
+                        case 2:
+                            displayLecturer(department);
+                            break;
+                        case 3:
+                            removeLecturer(department);
+                            break;
+                        case 4:
+                            modifyLecturer(department);
+                            break;
+                        case 5:
+                            displayAllLecturers(department);
+                            break;
+                        case 6:
+                            addStudent(department);
+                            break;
+                        case 7:
+                            displayStudent(department);
+                            break;
+                        case 8:
+                            removeStudent(department);
+                            break;
+                        case 9:
+                            modifyStudent(department);
+                            break;
+                        case 10:
+                            displayAllStudents(department);
+                            break;
+                        case 11:
+                            break inner_loop;
+                        default:
+                            System.out.println("Invalid option");
+                            break;
+                    }
+                }
+            }
+        }
+
+    private static void addLecturer(Department department) {
+        sc.nextLine(); // flush the buffer
+        System.out.print("===Add lecturer==="+"\n Enter lecturer name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter lecturer age: ");
+        int age = sc.nextInt();
+        sc.nextLine(); // flush the buffer
+        System.out.print("Enter lecturer email: ");
+        String email = sc.nextLine();
+        System.out.print("Enter lecturer phone number: ");
+        String phoneNumber = sc.nextLine();
+        System.out.print("Enter lecturer sex (M/F): ");
+        char sex = sc.next().charAt(0);
+        sc.nextLine(); // flush the buffer
+        System.out.print("Enter lecturer address: ");
+        String address = sc.nextLine();
+        System.out.print("Enter lecturer salary: ");
+        double salary = sc.nextDouble();
+        Lecturer lecturer = new Lecturer(name, age, email, phoneNumber, sex, address, salary);
+        department.addLecturer(lecturer);
+        System.out.println("======================================="+
+                "\nLecturer added. The id of the lecturer is: "+lecturer.getId());
+    }
+private static void displayLecturer(Department department){
+    System.out.print("===Display lecturer==="+"\n Enter lecturer id: ");
+    int id = sc.nextInt();
+    department.displayLecturer(id);
+}
+    private static void removeLecturer(Department department) {
+        System.out.print("===Remove lecturer==="+"\n Enter lecturer id: ");
+        int id = sc.nextInt();
+        department.removeLecturer(id);
+        System.out.println("==================="+
+                "\nLecturer removed");
+    }
+    private static void modifyLecturer(Department department){
+        System.out.print("===Modify lecturer==="+"\n Enter lecturer id: ");
+        int id = sc.nextInt();
+        sc.nextLine(); // flush the buffer
+        System.out.print("Enter lecturer new name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter lecturer new age: ");
+        int age = sc.nextInt();
+        sc.nextLine(); // flush the buffer
+        System.out.print("Enter lecturer new email: ");
+        String email = sc.nextLine();
+        System.out.print("Enter lecturer new phone number: ");
+        String phoneNumber = sc.next();
+        System.out.print("Enter lecturer new sex (M/F): ");
+        char sex = sc.next().charAt(0);
+        sc.nextLine(); // flush the buffer
+        System.out.print("Enter lecturer new address: ");
+        String address = sc.nextLine();
+        System.out.print("Enter lecturer new salary: ");
+        double salary = sc.nextDouble();
+        department.modifyLecturer(id,name,age,email,phoneNumber,sex,address,salary);
+        System.out.println("==================="+
+                "\nLecturer details updated");
+
+    }
+
+    private static void addStudent(Department department) {
+        sc.nextLine(); // flush the buffer
+        System.out.print("===Add student==="+"\n Enter student name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter student age: ");
+        int age = sc.nextInt();
+        sc.nextLine(); // flush the buffer
+        System.out.print("Enter student email: ");
+        String email = sc.nextLine();
+        System.out.print("Enter student phone number: ");
+        String phoneNumber = sc.next();
+        System.out.print("Enter student sex (M/F): ");
+        char sex = sc.next().charAt(0);
+        sc.nextLine(); // flush the buffer
+        System.out.print("Enter student address: ");
+        String address = sc.nextLine();
+        System.out.print("Enter student course: ");
+        String course = sc.nextLine();
+        System.out.print("Enter student fees: ");
+        double fees = sc.nextDouble();
+        Student student = new Student(name, age, email, phoneNumber, sex,address, course, fees);
+        department.addStudent(student);
+        System.out.println("======================================="+
+                "\nStudent added. The id of the student is: "+student.getId());
+    }
+    private static void displayStudent(Department department) {
+        System.out.print("===Display student==="+"\n Enter student id: ");
+        int id = sc.nextInt();
+        department.displayStudent(id);
+
+    }
+
+    private static void removeStudent(Department department) {
+        System.out.print("===Remove student==="+"\n Enter student id: ");
+        int id = sc.nextInt();
+        department.removeStudent(id);
+        System.out.println("==================="+
+                "\nStudent removed");
+    }
+
+   private static void modifyStudent(Department department){
+       System.out.print("===Modify student==="+"\n Enter student id: ");
+       int id = sc.nextInt();
+       sc.nextLine(); // flush the buffer
+       System.out.print("Enter student new name: ");
+       String name = sc.nextLine();
+       System.out.print("Enter student new age: ");
+       int age = sc.nextInt();
+       sc.nextLine(); // flush the buffer
+       System.out.print("Enter student new email: ");
+       String email = sc.nextLine();
+       System.out.print("Enter student new phone number: ");
+       String phoneNumber = sc.next();
+       System.out.print("Enter student new sex (M/F): ");
+       char sex = sc.next().charAt(0);
+       sc.nextLine(); // flush the buffer
+       System.out.print("Enter student new address: ");
+       String address = sc.nextLine();
+       System.out.print("Enter student new course: ");
+       String course = sc.nextLine();
+       System.out.print("Enter student new fees: ");
+       double fees = sc.nextDouble();
+       department.modifyStudent(id,name,age,email,phoneNumber,sex,address,course,fees);
+       System.out.println("==================="+
+               "\nStudent details updated");
+   }
+   public static void displayAllLecturers(Department department){
+        department.displayAllLecturers();
+
+        }
+    public static void displayAllStudents(Department department){
+        department.displayAllStudents();
+
+    }
+
+   }
+//Package “Task3”
+//Class Appointment
+package Task3;
+
+import java.time.LocalDateTime;
+
+public class Appointment {
+    private Student student;
+    private Lecturer lecturer;
+    private  LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+
+    public Appointment(Student student, Lecturer lecturer, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        this.student = student;
+        this.lecturer = lecturer;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+    }
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+}
+
+//Class AppointmentBooking
+package Task3;
+
+import java.time.LocalDateTime;
+import java.util.Scanner;
+
+public class AppointmentBooking {
+
+    public static void main(String[] args) {
+
+        // Generate data
+        Data data = new Data();
+        data.generateData();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the student drop-in session booking portal." +
+                "\n============================================");
+        // loop
+        while (true) {
+
+            System.out.println("Press 1. to book and appointment, otherwise press any other key to quit.");
+            int choice = scanner.nextInt();
+
+            // breaks loop if choice is not 1
+            if (choice != 1) {
+                System.exit(0);
+            } else {
+                System.out.println("Enter your Student Id:");
+                int studentId = scanner.nextInt();
+                Student student = null;
+                for (Student stud : Data.studentList) {
+                    if (stud.getId() == studentId) {
+                        student = stud;
+                        break;
+                    }
+                }
+                // Print available lecturers
+                System.out.println("Available lecturers:");
+                for (Staff staff : Data.staffList) {
+                    if (staff instanceof Lecturer) {
+                        System.out.println(staff.getId() + ": " + staff.getName());
+                    }
+                }
+
+                // Prompt student to select lecturer
+
+                System.out.print("Select a lecturer by ID: ");
+                int lecturerId = scanner.nextInt();
+
+                // Find selected lecturer
+                Lecturer lecturer = null;
+                LocalDateTime startAvailability = null;
+                for (Staff staff : Data.staffList) {
+                    if (staff instanceof Lecturer && staff.getId() == lecturerId) {
+                        lecturer = (Lecturer) staff;
+                        startAvailability = lecturer.getStartAvailability();
+                        break;
+                    }
+                }
+
+                // Print lecturer availability
+                if (lecturer != null) {
+                    System.out.println("Lecturer " + lecturer.getName() + " is available at the following times:");
+                    for (LocalDateTime time : lecturer.getAvailability(startAvailability)) {
+                        System.out.println(time);
+                    }
+                } else {
+                    System.out.println("Invalid lecturer ID.");
+                }
+
+                // Prompt student to select appointment time
+                System.out.print("Select an appointment Date and time (YYYY-MM-DDThh:mm): ");
+                String appointmentTime = scanner.next();
+                LocalDateTime selectedTime = LocalDateTime.parse(appointmentTime);
+
+                // Check if appointment time is available
+                boolean isAvailable = false;
+                for (LocalDateTime time : lecturer.getAvailability(selectedTime)) {
+                    if (selectedTime.equals(time)) {
+                        isAvailable = true;
+                        break;
+                    }
+                }
+
+                // Book appointment if available, otherwise print error message
+                if (isAvailable) {
+                    Appointment appointment = new Appointment(student, lecturer, selectedTime, selectedTime.plusMinutes(15));
+                    Data.appointmentList.add(appointment);
+                    lecturer.addAppointment(appointment);
+                    System.out.println("===================="+
+                            "\nAppointment booked for student: " +
+                            student.getName()+
+                            "  that holds student ID: "+studentId +
+                            "  for a drop-in session with lecturer: "+
+                            lecturer.getName() +
+                            "  at " +
+                            selectedTime+
+                            "\n====================");
+                } else {
+                    System.out.println("Selected time is not available.");
+                }
+            }
+        }
+    }
+}
+
+//Class BootCamp
+package Task3;
+import java.util.Objects;
+import java.util.Scanner;
+public class BootCamp {
+
+    public static void main(String[] args) {
+        // Generate data
+        Data data = new Data();
+        data.generateData();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the Technology Department BootCamp in programming." +
+                "\n============================================");
+        // loop
+        while (true) {
+
+            System.out.println("=================================="+
+                    "\nEnter Yes if you want to enroll, or No to exit");
+            String choice = scanner.nextLine();
+
+           // breaks if No
+            if (Objects.equals(choice, "No")) {
+                System.exit(0);
+            } else {
+                //enrolls if yes
+                if(Objects.equals(choice,"Yes")){
+                    TechnologyBootCampFeeCalculator feeCalculator = new TechnologyBootCampFeeCalculator();
+
+                    // prompts the student to select student status
+                    System.out.println("Enter 1 if you are an internal student or 2 if you are an external student");
+                    int choice2 = scanner.nextInt();
+                    scanner.nextLine(); // consume the newline character
+                    if (choice2==1){
+                        // full price for internal student
+                        double fee = feeCalculator.calculateFee(false, true);
+                        System.out.println("The boot camp fee is: £" + fee);
+
+                    }else if (choice2 ==2){
+                        // prompts the external student to choose future enrolments
+                        System.out.println("You will receive a 25% discount on the BootCamp fee if you enroll on future full-time courses."+
+                                "\n Enter 1 if you want to enroll or 2 to skip");
+                        int choice3 = scanner.nextInt();
+                        scanner.nextLine(); // consume the newline character
+                        if (choice3==1){
+                            // discount applied if enrolled
+                            double fee = feeCalculator.calculateFee(true, true);
+                            System.out.println("The boot camp fee is: £" + fee);
+                        }else if (choice3==2){
+                            //full price if declined enrollment
+                            double fee = feeCalculator.calculateFee(true, false);
+                            System.out.println("The boot camp fee is: £" + fee);
+                        }else {
+                            System.out.println("Invalid option.");
+                        }
+                    }else {
+                        System.out.println("Invalid option.");
+                    }
+                }else {
+                    System.out.println("Invalid option.");
+                }
+            }
+        }
+    }
+}
+
+//Class BootCampExternalStudent
+package Task3;
+
+public class BootCampExternalStudent extends Student {
+
+    private boolean enrolledOnFullTimeCourse;
+    private double bootCampFees;
+
+    public BootCampExternalStudent(int id, String name, int age, String email, String phoneNumber, char sex, String address, boolean enrolledOnFullTimeCourse, double bootCampFees) {
+        super(id, name, age, email, phoneNumber, sex, address,"BootCamp", 0);
+        this.enrolledOnFullTimeCourse = enrolledOnFullTimeCourse;
+        this.bootCampFees = bootCampFees;
+    }
+
+    public boolean isEnrolledOnFullTimeCourse() {
+        return enrolledOnFullTimeCourse;
+    }
+
+    public void setEnrolledOnFullTimeCourse(boolean enrolledOnFullTimeCourse) {
+        this.enrolledOnFullTimeCourse = enrolledOnFullTimeCourse;
+    }
+
+    public double getBootCampFees() {
+        return bootCampFees;
+    }
+
+    public void setBootCampFees(double bootCampFees) {
+        this.bootCampFees = bootCampFees;
+    }
+}
+
+//Class BootCampFeeCalculator
+package Task3;
+
+// Define an abstract class/interface for boot camp fee calculation
+public abstract class BootCampFeeCalculator {
+    public abstract double calculateFee(boolean isExternal, boolean isEnrolled);
+
+    // Define a constant value for the base fee of the boot camp
+    protected static final double BASE_FEE = 500.0;
+
+    // Define a constant value for the discount percentage for enrolled external students
+    private static final double EXTERNAL_DISCOUNT = 0.25;
+
+
+    // Define a method for calculating the discount amount based on the given parameters
+    double calculateDiscount(boolean isExternal, boolean isEnrolled) {
+        if (isExternal) {
+            if (isEnrolled) {
+                return BASE_FEE * (EXTERNAL_DISCOUNT);
+            } else {
+                return 0.0;
+            }
+        }
+        return 0.0;
+    }
+}
+
+
+//Class BootCampLecturer
+package Task3;
+
+public class BootCampLecturer extends Staff {
+    public BootCampLecturer(int id, String name, int age, String email, String phoneNumber, char sex, String address, double salary) {
+        super(id, name, age, email, phoneNumber, sex, address, salary);
+    }
+}
+
+//Class Data
+package Task3;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+public class Data {
+
+    public static ArrayList<Staff> staffList = new ArrayList<>();
+    public static ArrayList<Student> studentList = new ArrayList<>();
+    public static ArrayList<Appointment> appointmentList = new ArrayList<>();
+
+    public void generateData(){
+        // add 5 staff records including at least 3 lecturers
+        Staff staff1 = new Staff(1,"John Dane", 35, "john.dane@university.com", "0734567890", 'M', "123 Main St.", 60000);
+        Staff staff2 = new Staff(2,"Jane Dane", 40, "jane.dane@university.com", "0787654321", 'F', "456 Main St.", 65000);
+        Lecturer staff3 = new Lecturer(3,"Phillip Willis", 45, "phillip.willis@university.com", "0778901234", 'M', "789 Main St.", 70000);
+        Lecturer staff4 = new Lecturer(4,"Barbara Brown", 50, "barbara.brown@university.com", "0789051234", 'F', "246 Main St.", 75000);
+        Lecturer staff5 = new Lecturer(5,"Bill Burr", 55, "bill.burr@university.com", "0790123456", 'M', "369 Main St.", 80000);
+
+        BootCampLecturer staff6 = new BootCampLecturer(6,"Joanna Syrups",59,"joanna.syrups@bootcamp.com","07456773289",'F',"36 Main St.",80000);
+        BootCampLecturer staff7 = new BootCampLecturer(7,"Garry May",47,"garry.may@bootcamp.com","07456391289",'M',"24 Main St.",80200);
+
+        staffList.add(staff1);
+        staffList.add(staff2);
+        staffList.add(staff3);
+        staffList.add(staff4);
+        staffList.add(staff5);
+        staffList.add(staff6);
+        staffList.add(staff7);
+
+        // add 15 student records
+
+        Student student1 = new Student(1,"Jim Parsons", 21, "jim.parsons@email.com", "07456123123", 'M', "123 Main St", "Full-Time", 5000);
+        Student student2 = new Student(2,"Jane Rickets", 22, "jane.rickets@email.com", "07456423234", 'F', "124 Main St", "Part-Time", 2500);
+        Student student3 = new Student(3,"Jim Smith", 23, "jim.smith@email.com", "07456345423", 'M', "125 Main St", "Full-Time", 6000);
+        Student student4 = new Student(4,"Sara Johnson", 24, "sara.johnson@email.com", "07456345632", 'F', "126 Main St", "Part-Time", 3000);
+        Student student5 = new Student(5,"Mike Davis", 25, "mike.davis@email.com", "07456542134", 'M', "127 Main St", "Full-Time", 7000);
+        Student student6 = new Student(6,"Amy Brown", 26, "amy.brown@email.com", "07456532111", 'F', "128 Main St", "Part-Time", 3500);
+        Student student7 = new Student(7,"David Lee", 27, "david.lee@email.com", "07456222333", 'M', "129 Main St", "Full-Time", 8000);
+        Student student8 = new Student(8,"Carla Wilson", 28, "carla.wilson@email.com", "07456234113", 'F', "130 Main St", "Part-Time", 4000);
+        Student student9 = new Student(9,"Tom Peterson",  29, "tom.peterson@email.com", "07456123422", 'M', "131 Main St", "Full-Time", 9000);
+        Student student10 = new Student(10,"Julia Lee", 30, "julia.lee@email.com" , "07456121212", 'F', "456 Main St" , "Full-Time", 8000);
+        Student student11 = new Student(11, "Michael Green", 31, "michael.green@email.com", "07456987878", 'M', "132 Main St", "Part-Time", 4500);
+        Student student12 = new Student(12, "Emily Taylor", 32, "emily.taylor@email.com", "07456321212", 'F', "133 Main St", "Full-Time", 7000);
+        Student student13 = new Student(13, "Mark Brown", 33, "mark.brown@email.com", "07456454545", 'M', "134 Main St", "Part-Time", 3000);
+        Student student14 = new Student(14, "Olivia Smith", 34, "olivia.smith@email.com", "07456345456", 'F', "135 Main St", "Full-Time", 6500);
+        Student student15 = new Student(15, "Joshua Lee", 35, "joshua.lee@email.com", "07456234567", 'M', "136 Main St", "Part-Time", 3500);
+
+        BootCampExternalStudent student16 = new BootCampExternalStudent(16,"Jon Law", 21, "john.law@email.com", "07456667667", 'M', "100 Main St",false,500);
+        BootCampExternalStudent student17 = new BootCampExternalStudent(17,"Bill Doors", 27, "bill.doors@email.com", "07456998998", 'M', "101 Main St",false,500);
+
+        studentList.add(student1);
+        studentList.add(student2);
+        studentList.add(student3);
+        studentList.add(student4);
+        studentList.add(student5);
+        studentList.add(student6);
+        studentList.add(student7);
+        studentList.add(student8);
+        studentList.add(student9);
+        studentList.add(student10);
+        studentList.add(student11);
+        studentList.add(student12);
+        studentList.add(student13);
+        studentList.add(student14);
+        studentList.add(student15);
+        studentList.add(student16);
+        studentList.add(student17);
+
+        // add 9 appointments
+        LocalDateTime startDateTime1 = LocalDateTime.of(2023, 3, 20, 9, 0);
+        staff3.setStartAvailability(startDateTime1);
+        Appointment appointment1 = new Appointment( student7, staff3, LocalDateTime.of(2023,3,20,9,30), LocalDateTime.of(2023,3,20,9,45));
+        Appointment appointment2 = new Appointment( student8, staff3, LocalDateTime.of(2023,3,20,10,45), LocalDateTime.of(2023,3,20,11,0));
+        Appointment appointment3 = new Appointment( student10, staff3, LocalDateTime.of(2023,3,20,11,0), LocalDateTime.of(2023,3,20,11,15));
+        Appointment appointment4 = new Appointment( student11, staff3, LocalDateTime.of(2023,3,20,12,0), LocalDateTime.of(2023,3,20,12,15));
+        staff3.addAppointment(appointment1);
+        staff3.addAppointment(appointment2);
+        staff3.addAppointment(appointment3);
+        staff3.addAppointment(appointment4);
+        appointmentList.add(appointment1);
+        appointmentList.add(appointment2);
+        appointmentList.add(appointment3);
+        appointmentList.add(appointment4);
+
+        LocalDateTime startDateTime2 = LocalDateTime.of(2023, 3, 21, 13, 0);
+        staff4.setStartAvailability(startDateTime2);
+        Appointment appointment5 = new Appointment( student1, staff4, LocalDateTime.of(2023,3,21,13,0), LocalDateTime.of(2023,3,21,13,15));
+        Appointment appointment6 = new Appointment( student2, staff4, LocalDateTime.of(2023,3,21,14,45), LocalDateTime.of(2023,3,21,15,0));
+        Appointment appointment7 = new Appointment( student3, staff4, LocalDateTime.of(2023,3,21,15,15), LocalDateTime.of(2023,3,21,15,30));
+        staff4.addAppointment(appointment5);
+        staff4.addAppointment(appointment6);
+        staff4.addAppointment(appointment7);
+        appointmentList.add(appointment5);
+        appointmentList.add(appointment6);
+        appointmentList.add(appointment7);
+
+
+        LocalDateTime startDateTime3 = LocalDateTime.of(2023, 3, 22, 10, 0);
+        staff5.setStartAvailability(startDateTime3);
+        Appointment appointment8 = new Appointment( student4, staff5, LocalDateTime.of(2023,3,22,10,30), LocalDateTime.of(2023,3,22,10,45));
+        Appointment appointment9 = new Appointment( student5, staff5, LocalDateTime.of(2023,3,22,10,45), LocalDateTime.of(2023,3,22,11,0));
+        staff5.addAppointment(appointment8);
+        staff5.addAppointment(appointment9);
+        appointmentList.add(appointment8);
+        appointmentList.add(appointment9);
+
+
+
+        }
+    }
+
+//Class Lecturer
+package Task3;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+public class Lecturer extends Staff {
+    private ArrayList<Appointment> appointments;
+    private LocalDateTime startAvailability;
+
+    public Lecturer(int id, String name, int age, String email, String phoneNumber, char sex, String address, double salary) {
+        super(id, name, age, email, phoneNumber, sex, address, salary);
+        this.appointments = new ArrayList<>();
+    }
+
+    public boolean isAvailable(LocalDateTime dateTime) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getStartDateTime().isEqual(dateTime) || appointment.getStartDateTime().isBefore(dateTime) && appointment.getEndDateTime().isAfter(dateTime)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public ArrayList<LocalDateTime> getAvailability(LocalDateTime startDateTime) {
+        ArrayList<LocalDateTime> availableTimes = new ArrayList<>();
+        LocalDateTime currentDateTime = startDateTime;
+        while (currentDateTime.isBefore(startDateTime.plusHours(4))) {
+            if (isAvailable(currentDateTime)) {
+                availableTimes.add(currentDateTime);
+            }
+            currentDateTime = currentDateTime.plusMinutes(15);
+        }
+        return availableTimes;
+    }
+
+    public LocalDateTime getStartAvailability() {
+        return startAvailability;
+    }
+
+    public void setStartAvailability(LocalDateTime startAvailability) {
+        this.startAvailability = startAvailability;
+    }
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+    }
+}
+
+//Class Person
+
+package Task3;
+
+public abstract class Person {
+
     private String name;
+    private int age;
+    private String email;
+    private String phoneNumber;
+    private char sex;
+    private String address;
+
+    public Person(String name, int age, String email, String phoneNumber, char sex, String address) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.sex = sex;
+        this.address = address;
+    }
+
+
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public char getSex() {
+        return sex;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setSex(char sex) {
+        this.sex = sex;
+    }
+}
+
+
+//Class Staff
+package Task3;
+
+public class Staff extends Person {
+    private double salary;
+    private int id;
+    public Staff (int id, String name, int age, String email, String phoneNumber, char sex, String address, double salary) {
+        super(name, age, email, phoneNumber, sex, address);
+        this.salary = salary;
+        this.id =id;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+
+}
+
+//Class Student
+package Task3;
+
+
+class Student extends Person {
+    private String course;
     private double fees;
 
-    public Bootcamp(int id, String name, double fees) {
-        this.id = id;
-        this.name = name;
+    private int id;
+
+    public Student(int id, String name, int age, String email, String phoneNumber, char sex, String address, String course, double fees) {
+        super(name, age, email, phoneNumber, sex, address);
+        this.course = course;
         this.fees = fees;
+        this.id =id;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public double getFees() {
-        return fees;
-    }
-
-    public void setFees(double fees) {
-        this.fees = fees;
-    }
 }
 
+//Class TechnologyBootCampFeeCalculator
+package Task3;
+
+// Implement the abstract method for boot camp fee calculation
+public class TechnologyBootCampFeeCalculator extends BootCampFeeCalculator {
+
+
+    @Override
+    public double calculateFee(boolean isExternal,  boolean isEnrolled) {
+        double fee = BASE_FEE;
+        double discount = calculateDiscount(isExternal, isEnrolled);
+        return fee - discount;
+    }
+}
 
 
 
